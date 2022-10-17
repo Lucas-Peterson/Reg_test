@@ -14,9 +14,6 @@ dp = Dispatcher(bot)
 
 db = Database('database.db')
 
-count = 0
-
-
 @dp.message_handler(commands='Start')
 async def start(message: types.Message):
     if(not db.user_exists(message.from_user.id)):
@@ -33,14 +30,14 @@ async def start(message: types.Message):
 
 @dp.callback_query_handler(text='stat')
 async def start_button(call: types.CallbackQuery):
-    await call.message.answer(text_modul, reply_markup=markup2)
+    await call.message.answer(text_modul)
 
 
 @dp.message_handler()
 async def bot_message(message: types.Message):
-    if message.chat.type == 'private':
-        if message.text == "Начать!":
-            await bot.send_message(message.from_user.id, text_modul, reply_markup=markup2)
+    if message. chat. type == 'private':
+        if message. text == "Начать!":
+            await bot.send_message(message.from_user.id, text_modul)
         else:
             if db.get_signup(message.from_user.id) == "setnickname":
                 db.set_nickname(message.from_user.id, message.text)
@@ -48,6 +45,7 @@ async def bot_message(message: types.Message):
                 await bot.send_message(message.from_user.id, "Вы прошли регистрацию!", reply_markup=nav.mainMenu)
             else:
                 await bot.send_message(message.from_user.id, "Что?")
+
 
 text_modul = 'С другой стороны постоянный количественный рост и сфера нашей активности представляет'
 
@@ -62,10 +60,6 @@ markup2 = InlineKeyboardMarkup(row_width=1,
 @dp.callback_query_handler(text='exam')
 async def exam(call: types.CallbackQuery):
     await call.message.answer('Привет! Экзамен просто и тестовый, надеюсь ты справишься? Ты готов?')
-
-
-
-
 
 
 
