@@ -1,6 +1,7 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import markups as nav
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from db import Database
 
 
@@ -13,19 +14,30 @@ dp = Dispatcher(bot)
 
 db = Database('database.db')
 
-@dp.message_handler(commands =['Start'])
+@dp.message_handler(commands='Start')
 async def start(message: types.Message):
     if(not db.user_exists(message.from_user.id)):
         db.add_user(message.from_user.id)
         await bot.send_message(message.from_user.id, "Укажите ваше имя")
     else:
-        await bot.send_message(message.from_user.id, "Вы уже зарегистрированы!")
+        markup = InlineKeyboardMarkup(row_width=1,
+                                inline_keyboard=[
+                                    [
+                                        InlineKeyboardButton(text='Продолжить курс', callback_data='stat')
+                                    ]
+                                ])
+        await bot.send_message(message.from_user.id, "Вы уже зарегистрированы!", reply_markup=markup)
+
+@dp.callback_query_handler(text='stat')
+async def start_button(call: types.CallbackQuery):
+    await call.message.answer(text_modul)
+
 
 @dp.message_handler()
 async def bot_message(message: types.Message):
     if message. chat. type == 'private':
         if message. text == "Начать!":
-            pass
+            await bot.send_message(message.from_user.id, text_modul)
         else:
             if db.get_signup(message.from_user.id) == "setnickname":
                 db.set_nickname(message.from_user.id, message.text)
@@ -34,5 +46,8 @@ async def bot_message(message: types.Message):
             else:
                 await bot.send_message(message.from_user.id, "Что?")
 
+
+text_modul = 'С другой стороны постоянный количественный рост и сфера нашей активности представляет'
+
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates = True)
+    executor.start_polling(dp, skip_updates=True)
