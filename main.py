@@ -62,11 +62,7 @@ markup2 = InlineKeyboardMarkup(row_width=1,
 @dp.callback_query_handler(text='exam')
 async def start_button(call: types.CallbackQuery):
     await call.message.answer('Привет! Экзамен просто и тестовый, надеюсь ты справишься? Чтобы дать ответ пиши цифры 1 и 2')
-    count = 0
-    while True:
-        await bot.send_message('Напиши цифру 1')
-        if text == 2:
-            await bot.send_message('Верно!')
+
 
 
 
