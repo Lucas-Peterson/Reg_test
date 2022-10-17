@@ -14,6 +14,9 @@ dp = Dispatcher(bot)
 
 db = Database('database.db')
 
+count = 0
+
+
 @dp.message_handler(commands='Start')
 async def start(message: types.Message):
     if(not db.user_exists(message.from_user.id)):
@@ -46,10 +49,6 @@ async def bot_message(message: types.Message):
             else:
                 await bot.send_message(message.from_user.id, "Что?")
 
-
-
-
-
 text_modul = 'С другой стороны постоянный количественный рост и сфера нашей активности представляет'
 
 markup2 = InlineKeyboardMarkup(row_width=1,
@@ -59,9 +58,12 @@ markup2 = InlineKeyboardMarkup(row_width=1,
                                     ]
                                 ])
 
+
 @dp.callback_query_handler(text='exam')
-async def start_button(call: types.CallbackQuery):
-    await call.message.answer('Привет! Экзамен просто и тестовый, надеюсь ты справишься? Чтобы дать ответ пиши цифры 1 и 2')
+async def exam(call: types.CallbackQuery):
+    await call.message.answer('Привет! Экзамен просто и тестовый, надеюсь ты справишься? Ты готов?')
+
+
 
 
 
