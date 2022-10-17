@@ -30,14 +30,14 @@ async def start(message: types.Message):
 
 @dp.callback_query_handler(text='stat')
 async def start_button(call: types.CallbackQuery):
-    await call.message.answer(text_modul)
+    await call.message.answer(text_modul, reply_markup=markup2)
 
 
 @dp.message_handler()
 async def bot_message(message: types.Message):
-    if message. chat. type == 'private':
-        if message. text == "Начать!":
-            await bot.send_message(message.from_user.id, text_modul)
+    if message.chat.type == 'private':
+        if message.text == "Начать!":
+            await bot.send_message(message.from_user.id, text_modul, reply_markup=markup2)
         else:
             if db.get_signup(message.from_user.id) == "setnickname":
                 db.set_nickname(message.from_user.id, message.text)
@@ -47,7 +47,29 @@ async def bot_message(message: types.Message):
                 await bot.send_message(message.from_user.id, "Что?")
 
 
+
+
+
 text_modul = 'С другой стороны постоянный количественный рост и сфера нашей активности представляет'
+
+markup2 = InlineKeyboardMarkup(row_width=1,
+                                inline_keyboard=[
+                                    [
+                                        InlineKeyboardButton(text='Начать экзамен', callback_data='exam')
+                                    ]
+                                ])
+
+@dp.callback_query_handler(text='exam')
+async def start_button(call: types.CallbackQuery):
+    await call.message.answer('Привет! Экзамен просто и тестовый, надеюсь ты справишься? Чтобы дать ответ пиши цифры 1 и 2')
+    count = 0
+    while True:
+        await bot.send_message('Напиши цифру 1')
+        if text == 2:
+            await bot.send_message('Верно!')
+
+
+
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
