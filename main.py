@@ -14,6 +14,7 @@ dp = Dispatcher(bot)
 
 db = Database('database.db')
 
+
 @dp.message_handler(commands='Start')
 async def start(message: types.Message):
     if(not db.user_exists(message.from_user.id)):
@@ -23,14 +24,12 @@ async def start(message: types.Message):
         markup = InlineKeyboardMarkup(row_width=1,
                                 inline_keyboard=[
                                     [
-                                        InlineKeyboardButton(text='Продолжить курс', callback_data='stat')
+                                        InlineKeyboardButton(text='Продолжить курс', callback_data='sequel')
                                     ]
                                 ])
         await bot.send_message(message.from_user.id, "Вы уже зарегистрированы!", reply_markup=markup)
 
-@dp.callback_query_handler(text='stat')
-async def start_button(call: types.CallbackQuery):
-    await call.message.answer(text_modul)
+
 
 
 @dp.message_handler()
@@ -47,21 +46,51 @@ async def bot_message(message: types.Message):
                 await bot.send_message(message.from_user.id, "Что?")
 
 
-text_modul = 'С другой стороны постоянный количественный рост и сфера нашей активности представляет'
+text_modul = 'Прямо большой курс, текст и ещё раз текст'
 
-markup2 = InlineKeyboardMarkup(row_width=1,
+markup_1 = InlineKeyboardMarkup(row_width=1,
                                 inline_keyboard=[
                                     [
                                         InlineKeyboardButton(text='Начать экзамен', callback_data='exam')
                                     ]
                                 ])
 
+markup_2 = InlineKeyboardMarkup(row_width=1,
+                                inline_keyboard=[
+                                    [
+                                        InlineKeyboardButton(text='Да!', callback_data='Start_exam')
+                                    ]
+                                ])
+
+markup_3 = InlineKeyboardMarkup(row_width=2,
+                                inline_keyboard=[
+                                    [
+                                        InlineKeyboardButton(text='Правильный ответ', callback_data='True'),
+                                        InlineKeyboardButton(text='Неправильный ответ', callback_data='False')
+                                    ]
+                                ])
+
+
+@dp.callback_query_handler(text='sequel')
+async def start_button(call: types.CallbackQuery):
+    await call.message.answer(text_modul, reply_markup=markup_1)
 
 @dp.callback_query_handler(text='exam')
 async def exam(call: types.CallbackQuery):
-    await call.message.answer('Привет! Экзамен просто и тестовый, надеюсь ты справишься? Ты готов?')
+    await call.message.answer('Привет! Экзамен простой и тестовый, надеюсь ты справишься? Ты готов?', reply_markup=markup_2)
+
+@dp.callback_query_handler(text='True')
+async def exam(call: types.CallbackQuery):
+    await call.message.answer('Правильно!')
+
+@dp.callback_query_handler(text='False')
+async def exam(call: types.CallbackQuery):
+    await call.message.answer('Неправильно!')
+
+@dp.callback_query_handler(text='Start_exam')
+async def exam(call: types.CallbackQuery):
+    await call.message.answer('Вопрос 1', reply_markup= markup_3)
 
 
-
-if __name__ == "__main__":
+if __name__ == "__main_":
     executor.start_polling(dp, skip_updates=True)
