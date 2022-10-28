@@ -19,6 +19,10 @@ class Database:
         with self.connection:
             return self.cursor.execute("UPDATE users SET nickname = ? WHERE user_id = ?", (nickname, user_id,))
 
+    def set_email(self, user_id, email):
+        with self.connection:
+            return self.cursor.execute("UPDATE users SET email = ? WHERE user_id = ?", (email, user_id,))
+
     def get_signup(self, user_id):
         with self.connection:
             result = self.cursor.execute("SELECT signup FROM users WHERE user_id = ?", (user_id,)).fetchall()

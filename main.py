@@ -10,10 +10,12 @@ TOKEN = "5366708049:AAGlHzxaYZ6uJdyngXTF8c5clxXwqBLIWm4"
 logging.basicConfig(level=logging.INFO)
 
 bot = Bot(token=TOKEN)
+
 dp = Dispatcher(bot)
 
 db = Database('database.db')
 
+count = 0
 
 @dp.message_handler(commands='Start')
 async def start(message: types.Message):
@@ -28,9 +30,6 @@ async def start(message: types.Message):
                                     ]
                                 ])
         await bot.send_message(message.from_user.id, "Вы уже зарегистрированы!", reply_markup=markup)
-
-
-
 
 @dp.message_handler()
 async def bot_message(message: types.Message):
@@ -70,27 +69,35 @@ markup_3 = InlineKeyboardMarkup(row_width=2,
                                     ]
                                 ])
 
+markup_check = InlineKeyboardMarkup(row_width=1,
+                                inline_keyboard=[
+                                    [
+                                        InlineKeyboardButton(text='Да!', callback_data='Check')
+                                    ]
+                                ])
 
-@dp.callback_query_handler(text='sequel')
-async def start_button(call: types.CallbackQuery):
-    await call.message.answer(text_modul, reply_markup=markup_1)
 
 @dp.callback_query_handler(text='exam')
 async def exam(call: types.CallbackQuery):
-    await call.message.answer('Привет! Экзамен простой и тестовый, надеюсь ты справишься? Ты готов?', reply_markup=markup_2)
+    await call.message.answer('Привет! Экзамен простой и тестовый, надеюсь ты справишься? Ты готов?', reply_markup=markup_2, )
 
 @dp.callback_query_handler(text='True')
-async def exam(call: types.CallbackQuery):
+async def Truech(call: types.CallbackQuery):
     await call.message.answer('Правильно!')
 
+
 @dp.callback_query_handler(text='False')
-async def exam(call: types.CallbackQuery):
+async def false(call: types.CallbackQuery):
     await call.message.answer('Неправильно!')
 
 @dp.callback_query_handler(text='Start_exam')
-async def exam(call: types.CallbackQuery):
+async def start_exam(call: types.CallbackQuery):
     await call.message.answer('Вопрос 1', reply_markup= markup_3)
 
+@dp.callback_query_handler(text='sequel')
+async def seqel(call: types.CallbackQuery):
+    await call.message.answer(text_modul, reply_markup=markup_1)
 
-if __name__ == "__main_":
+
+if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
