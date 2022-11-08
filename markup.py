@@ -52,7 +52,7 @@ markup_check = InlineKeyboardMarkup(row_width=1,
 
 @dp.callback_query_handler(text='exam')
 async def exam(call: types.CallbackQuery):
-    await call.message.answer('Привет! Экзамен простой и тестовый, надеюсь ты справишься? Ты готов?', reply_markup=markup_2, )
+    await call.message.answer('Привет! Экзамен простой и тестовый, надеюсь ты справишься? Ты готов?', reply_markup=markup_2)
 
 @dp.callback_query_handler(text='True')
 async def Truech(call: types.CallbackQuery):
@@ -65,11 +65,8 @@ async def false(call: types.CallbackQuery):
 
 @dp.callback_query_handler(text='Start_exam')
 async def start_exam(call: types.CallbackQuery):
-    await call.message.answer('Вопрос 1', reply_markup= markup_3)
+    await call.message.answer('Вопрос 1', reply_markup=markup_3)
 
 @dp.callback_query_handler(text='sequel')
 async def seqel(call: types.CallbackQuery):
     await call.message.answer(text_modul, reply_markup=markup_1)
-
-
-text_modul = 'Прямо большой курс, текст и ещё раз текст'
